@@ -68,18 +68,36 @@ const login = async (req, res) => {
   try {
     const user = await User.findOne({ where: { username } });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).json({
+        statusCode: 400,
+        type: 'Validation Error',
+        message: 'Invalid username or password',
+      });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).json({
+        statusCode: 400,
+        type: 'Validation Error',
+        message: 'Invalid username or password',
+      });
     }
 
     const token = generateToken(user.id);
-    res.status(200).json({ message: 'Login successful', token });
+    res.status(200).json({
+      statusCode: 200,
+      type: 'Success',
+      message: 'Login successful',
+      token,
+    });
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({
+      statusCode: 500,
+      type: 'Server Error',
+      message: 'Server error',
+      error: err.message,
+    });
   }
 };
 
