@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Sync database
-sequelize.sync({ force: true }) // Hati-hati: `force: true` akan menghapus tabel yang ada
+sequelize.sync({ alter: true }) // Hati-hati: `force: true` akan menghapus tabel yang ada
   .then(() => console.log('Database synced'))
   .catch(err => console.error('Failed to sync database:', err));
 
