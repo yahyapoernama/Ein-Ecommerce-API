@@ -1,5 +1,6 @@
 const { verifyToken } = require('../utils/jwtUtils');
 
+// Middleware untuk memverifikasi token
 const authenticateToken = (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1];
   if (!token) {
@@ -11,8 +12,10 @@ const authenticateToken = (req, res, next) => {
     req.user = decoded; // Simpan data user di request object
     next();
   } catch (err) {
-    res.status(400).json({ message: 'Invalid token' });
+    res.status(400).json({ message: 'Invalid token', error: err.message });
   }
 };
 
-module.exports = authenticateToken;
+module.exports = {
+  authenticateToken,
+};

@@ -45,4 +45,15 @@ router.post(
   login
 );
 
+router.post(
+  '/logout', 
+  (req, res) => {
+    res.status(200).json({
+      statusCode: 200,
+      type: 'Success',
+      message: 'User logged out successfully',
+    });
+  }
+);
+
 module.exports = router;

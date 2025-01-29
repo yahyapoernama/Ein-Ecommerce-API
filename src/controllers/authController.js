@@ -45,11 +45,12 @@ const register = async (req, res) => {
     const newUser = await User.create({ username, email, password: hashedPassword });
     console.timeEnd('createUser');
 
+    const token = generateToken(newUser.id);
     res.status(201).json({
       statusCode: 201,
       type: 'Success',
       message: 'User registered successfully',
-      user: newUser,
+      token,
     });
   } catch (err) {
     res.status(500).json({
