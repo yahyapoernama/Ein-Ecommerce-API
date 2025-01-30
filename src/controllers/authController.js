@@ -50,6 +50,11 @@ const register = async (req, res) => {
       statusCode: 201,
       type: 'Success',
       message: 'User registered successfully',
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+      },
       token,
     });
   } catch (err) {
@@ -90,6 +95,11 @@ const login = async (req, res) => {
       statusCode: 200,
       type: 'Success',
       message: 'Login successful',
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
       token,
     });
   } catch (err) {
