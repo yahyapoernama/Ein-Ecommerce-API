@@ -20,6 +20,9 @@ sequelize.sync({ alter: true }) // Hati-hati: `force: true` akan menghapus tabel
 // Routes
 app.use('/api/auth', authRoutes); // Endpoint auth (register, login)
 app.use('/api', userRoutes); // Endpoint user (get all users, get user by username)
+app.use('/api/status', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
 
 // Jalankan server
 const PORT = process.env.PORT || 5000;
