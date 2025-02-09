@@ -3,8 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const sequelize = require('./config/database');
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
+const routes = require('./routes');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 
@@ -17,12 +18,18 @@ sequelize.sync({ alter: true }) // Hati-hati: `force: true` akan menghapus tabel
   .then(() => console.log('Database synced'))
   .catch(err => console.error('Failed to sync database:', err));
 
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+  
 // Routes
-app.use('/api/auth', authRoutes); // Endpoint auth (register, login)
-app.use('/api', userRoutes); // Endpoint user (get all users, get user by username)
-app.use('/api/status', (req, res) => {
-  res.status(200).json({ status: 'OK' });
-});
+app.use('/api', routes); // Semua routes ada di dalam /api
+
+// Middleware untuk akses file statis (hanya di development)
+if (process.env.NODE_ENV === 'development') {
+  app.use('/api/uploads', express.static('uploads'));
+}
 
 // Jalankan server
 const PORT = process.env.PORT || 5000;
