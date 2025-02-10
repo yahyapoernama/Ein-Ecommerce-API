@@ -1,7 +1,7 @@
 const { Op } = require('sequelize'); // Tambahkan ini
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/jwtUtils');
-const User = require('../models/User');
+const { User } = require('../models');
 
 // Register
 const register = async (req, res) => {

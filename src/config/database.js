@@ -1,16 +1,27 @@
-require('dotenv').config(); // Load environment variables
-const { Sequelize } = require('sequelize');
-
-const sequelize = new Sequelize(
-  process.env.DB_NAME, // Nama database
-  process.env.DB_USER, // Username database
-  process.env.DB_PASSWORD, // Password database
-  {
-    host: process.env.DB_HOST, // Host database
-    port: process.env.DB_PORT, // Port database
-    dialect: 'postgres', // Jenis database (postgres, mysql, sqlite, dll.)
-    logging: false, // Nonaktifkan logging jika tidak diperlukan
+require("dotenv").config(); // Tambahkan ini di atas
+module.exports = {
+  development: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: process.env.DB_DIALECT
+  },
+  test: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: process.env.DB_DIALECT
+  },
+  production: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: process.env.DB_DIALECT
   }
-);
-
-module.exports = sequelize;
+};
