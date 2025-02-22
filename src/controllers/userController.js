@@ -20,7 +20,7 @@ const getProfile = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email'], // Jangan kembalikan password
+      attributes: ['id', 'username', 'email', 'first_name', 'last_name'], // Jangan kembalikan password
     });
     res.status(200).json({ users });
   } catch (err) {
