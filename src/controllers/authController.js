@@ -5,7 +5,7 @@ const { User } = require('../models');
 
 // Register
 const register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, first_name, last_name } = req.body;
 
   try {
     console.time('findUser');
@@ -42,7 +42,9 @@ const register = async (req, res) => {
     console.timeEnd('hashPassword');
 
     console.time('createUser');
-    const newUser = await User.create({ username, email, password: hashedPassword });
+    const newUser = await User.create({
+      username, email, password: hashedPassword, first_name, last_name
+    });
     console.timeEnd('createUser');
 
     const token = generateToken(newUser.id);
@@ -93,6 +95,13 @@ const login = async (req, res) => {
     }
 
     const token = generateToken(user.id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", 
+      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax"
+    });
+
     res.status(200).json({
       statusCode: 200,
       type: 'Success',
