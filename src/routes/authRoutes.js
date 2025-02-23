@@ -1,6 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { login, register } = require('../controllers/authController');
+const { authenticateToken } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -52,6 +53,17 @@ router.post(
       statusCode: 200,
       type: 'Success',
       message: 'User logged out successfully',
+    });
+  }
+);
+
+// Endpoint to check authentication
+router.get(
+  '/check',
+  authenticateToken, (req, res) => {
+    res.send({
+      message: 'Authenticated successfully',
+      userId: req.userId
     });
   }
 );

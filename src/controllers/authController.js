@@ -48,6 +48,13 @@ const register = async (req, res) => {
     console.timeEnd('createUser');
 
     const token = generateToken(newUser.id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", 
+      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax"
+    });
+    
     res.status(201).json({
       statusCode: 201,
       type: 'Success',

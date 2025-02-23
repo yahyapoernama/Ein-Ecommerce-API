@@ -5,6 +5,7 @@ const cors = require('cors');
 const routes = require('./routes');
 const fs = require('fs');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -12,7 +13,13 @@ app.use(express.json());
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+  origin: [
+    process.env.ORIGIN,
+  ], // Sesuaikan dengan frontend
+  credentials: true, // Wajib jika memakai `withCredentials: true`
+}));
 
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
