@@ -8,8 +8,9 @@ if (!JWT_SECRET) {
   throw new Error("JWT_SECRET tidak ditemukan! Pastikan ada di file .env.");
 }
 
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+const generateToken = ({ id, username, email, first_name, last_name }) => {
+  const tokenPayload = { id, username, email, first_name, last_name };
+  return jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 };
 
 const verifyToken = (token) => {

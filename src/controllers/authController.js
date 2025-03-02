@@ -101,7 +101,17 @@ const login = async (req, res) => {
       });
     }
 
-    const token = generateToken(user.id);
+    const tokenPayload = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+    };
+
+    const token = generateToken(
+      tokenPayload
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
