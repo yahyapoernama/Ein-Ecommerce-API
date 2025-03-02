@@ -51,10 +51,10 @@ const register = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax"
     });
-    
+
     res.status(201).json({
       statusCode: 201,
       type: 'Success',
@@ -105,7 +105,7 @@ const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax"
     });
 
@@ -132,4 +132,23 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const profile = async (req, res) => {
+  User.findByPk(req.user.userId, {
+    attributes: ['id', 'username', 'email', 'first_name', 'last_name']
+  }).then(user => {
+    if (!user) {
+      return res.status(404).json({
+        statusCode: 404,
+        type: 'User Not Found',
+        message: 'User not found'
+      });
+    }
+    res.status(200).json({
+      statusCode: 200,
+      type: 'Success',
+      user
+    });
+  });
+}
+
+module.exports = { register, login, profile };

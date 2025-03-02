@@ -1,6 +1,6 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const { login, register } = require('../controllers/authController');
+const { login, register, profile } = require('../controllers/authController');
 const { authenticateToken } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -49,6 +49,7 @@ router.post(
 router.post(
   '/logout', 
   (req, res) => {
+    res.clearCookie("token", { path: "/" }); // Hapus token dari client
     res.status(200).json({
       statusCode: 200,
       type: 'Success',
@@ -60,12 +61,31 @@ router.post(
 // Endpoint to check authentication
 router.get(
   '/check',
-  authenticateToken, (req, res) => {
+  authenticateToken, 
+  (req, res) => {
     res.send({
       message: 'Authenticated successfully',
-      userId: req.userId
+      isAuthenticated: true,
+      user: req.user
     });
   }
+);
+
+router.get(
+  '/profile',
+  authenticateToken,
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        statusCode: 400,
+        type: 'Validation Error',
+        errors: errors.array(),
+      });
+    }
+    next();
+  },
+  profile
 );
 
 module.exports = router;
