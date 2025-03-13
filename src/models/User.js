@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
       timestamps: true, // createdAt & updatedAt
       paranoid: true, // deletedAt untuk soft delete
+      underscored: true, // Mengubah nama kolom menjadi snake_case
     }
   );
 

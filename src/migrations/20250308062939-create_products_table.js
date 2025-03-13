@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable("products", {
       id: {
         type: Sequelize.UUID,
@@ -10,45 +10,44 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      code: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-      price: {
-        type: Sequelize.INTEGER,
         allowNull: false,
       },
       description: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-      image: {
-        type: Sequelize.TEXT,
-        allowNull: true,
+      price: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
-      createdAt: {
+      store_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+      },
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
       },
-      deletedAt: {
+      deleted_at: {
         type: Sequelize.DATE, // Untuk soft delete
         allowNull: true,
       },
     });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable("products");
   }
 };

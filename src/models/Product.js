@@ -7,26 +7,25 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      code: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      price: {
-        type: DataTypes.INTEGER,
         allowNull: false,
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      image: {
-        type: DataTypes.TEXT,
-        allowNull: true,
+      price: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      store_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
       },
     },
     {
@@ -35,8 +34,28 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "products",
       timestamps: true,
       paranoid: true,
+      underscored: true,
     }
   );
+  
+  Product.associate = (models) => {
+    Product.belongsTo(models.User, { 
+      foreignKey: "store_id",
+      onDelete: "CASCADE",
+    });
+
+    Product.belongsToMany(models.Collection, { 
+      through: "ProductCollection", 
+      foreignKey: "product_id",
+      otherKey: "collection_id",
+    });
+    
+    Product.belongsToMany(models.Category, { 
+      through: "ProductCategory", 
+      foreignKey: "product_id",
+      otherKey: "category_id",
+    });
+  };
 
   return Product;
 };

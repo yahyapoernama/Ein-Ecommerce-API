@@ -1,7 +1,16 @@
 const express = require('express');
-const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('../controllers/productController');
+const {
+    getAllProducts,
+    getProductById,
+    createProduct, 
+    updateProduct, 
+    deleteProductSoft,
+    deleteProductPermanent,
+    deleteProductsSoftBatch,
+    deleteProductsPermanentBatch
+} = require('../controllers/productController');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 // Get all products
 router.get('/', getAllProducts);
@@ -16,7 +25,16 @@ router.post('/', createProduct);
 router.put('/:id', updateProduct);
 
 // Delete product by ID
-router.delete('/:id', deleteProduct);
+router.delete('/:id', deleteProductSoft);
+
+// Permanently delete product by ID
+router.delete('/:id/permanent', deleteProductPermanent);
+
+// Batch delete products
+router.post('/batch-delete', deleteProductsSoftBatch);
+
+// Batch permanently delete products
+router.post('/batch-delete/permanent', deleteProductsPermanentBatch);
 
 module.exports = router;
 
