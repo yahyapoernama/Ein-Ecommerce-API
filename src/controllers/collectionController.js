@@ -1,14 +1,17 @@
-const { Collection, User } = require('../models');
+const { Collection, Store } = require('../models');
 
 // Get All Collections
 const getAllCollections = async (req, res) => {
-  const { username } = req.params;
+  const { slug } = req.params; // Ambil slug dari params
   try {
-    const store = await User.findOne({ where: { username } });
+    const store = await Store.findOne({ where: { slug } }); // Cari store berdasarkan slug
     if (!store) {
       return res.status(404).json({ message: 'Store not found' });
     }
+
+    // Ambil koleksi yang berelasi dengan store_id
     const collections = await Collection.findAll({ where: { store_id: store.id } });
+
     res.status(200).json({ collections });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.UUID,
                 allowNull: false,
                 references: {
-                    model: "users",
+                    model: "stores",
                     key: "id",
                 },
             },
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     Collection.associate = (models) => {
-        Collection.belongsTo(models.User, {
+        Collection.belongsTo(models.Store, {
             foreignKey: 'store_id',
             onDelete: 'CASCADE',
         });

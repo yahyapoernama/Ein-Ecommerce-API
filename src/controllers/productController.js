@@ -1,15 +1,14 @@
 const { Op } = require('sequelize');
-const { Product, User } = require('../models');
+const { Product, Store } = require('../models');
 
 const getAllProducts = async (req, res) => {
   try {
-    console.log(req.params.username);
     const products = await Product.findAll({
       include: [
         {
-          model: User,
+          model: Store,
           attributes: [],
-          where: { username: req.params.username },
+          where: { slug: req.params.slug },
         },
       ],
       where: req.query.search
